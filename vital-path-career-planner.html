@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vital Path — Healthcare Career Planner for High Schoolers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #F3F6F1;
+    --panel: #FFFFFF;
+    --ink: #1D2624;
+    --ink-soft: #52605A;
+    --primary: #1F5C57;
+    --primary-deep: #123E3A;
+    --accent: #8C3B54;
+    --accent-soft: #F1E3E7;
+    --line: rgba(29,38,36,0.14);
+    --line-soft: rgba(29,38,36,0.08);
+    --maxw: 1120px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background: var(--paper);
+    color: var(--ink);
+    font-family:'Work Sans', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Spectral', serif;
+    font-weight:500;
+    letter-spacing:-0.01em;
+    color: var(--ink);
+  }
+  a{color:inherit;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px;}
+  button{font-family:inherit; cursor:pointer; border:none; background:none;}
+  ::selection{background:var(--accent); color:#fff;}
+  a:focus-visible, button:focus-visible, input:focus-visible{
+    outline:2px solid var(--primary); outline-offset:2px;
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background: rgba(243,246,241,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 18px 28px; max-width: var(--maxw); margin:0 auto;
+    gap: 20px; flex-wrap:wrap;
+  }
+  .brand{
+    font-family:'Spectral', serif; font-style:italic; font-size:1.25rem;
+    color: var(--primary-deep);
+  }
+  .brand small{
+    display:block; font-family:'Work Sans',sans-serif; font-style:normal;
+    font-size:0.72rem; color:var(--ink-soft); letter-spacing:0.02em; margin-top:1px;
+  }
+  .nav-links{display:flex; gap:28px; font-size:0.93rem; color:var(--ink-soft);}
+  .nav-links a{transition:color 0.2s;}
+  .nav-links a:hover{color:var(--primary);}
+  .nav-cta{
+    padding:10px 20px; background:var(--accent); color:#fff; border-radius:3px;
+    font-weight:600; font-size:0.9rem; transition:background 0.2s, transform 0.2s;
+  }
+  .nav-cta:hover{background:#742F44; transform:translateY(-1px);}
+  @media (max-width:760px){ .nav-links{display:none;} }
+
+  /* ---------- HERO ---------- */
+  .hero{padding: 76px 0 64px;}
+  .hero-inner{display:flex; gap:56px; align-items:center; flex-wrap:wrap;}
+  .hero-copy{flex:1 1 460px; min-width:300px;}
+  .hero-art{flex:1 1 340px; min-width:280px;}
+  .hero h1{font-size:clamp(2.2rem, 4.6vw, 3.4rem); line-height:1.08; max-width:14ch;}
+  .hero .lede{margin-top:20px; font-size:1.1rem; color:var(--ink-soft); max-width:46ch;}
+  .hero-ctas{display:flex; gap:14px; margin-top:32px; flex-wrap:wrap;}
+  .btn{
+    display:inline-block; padding:14px 26px; border-radius:3px; font-weight:600;
+    font-size:0.98rem; transition:transform 0.2s, background 0.2s, border-color 0.2s;
+    border:1px solid transparent;
+  }
+  .btn-primary{background:var(--accent); color:#fff;}
+  .btn-primary:hover{background:#742F44; transform:translateY(-1px);}
+  .btn-secondary{border-color:var(--line); color:var(--ink);}
+  .btn-secondary:hover{border-color:var(--primary); color:var(--primary);}
+  .hero-note{margin-top:26px; font-size:0.86rem; color:var(--ink-soft); font-style:italic; font-family:'Spectral',serif;}
+
+  /* ---------- QUIZ ---------- */
+  .quiz-section{padding: 90px 0; background:var(--panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .quiz-head{max-width:640px; margin: 0 auto 40px; text-align:center;}
+  .quiz-head h2{font-size:clamp(1.8rem,3vw,2.3rem);}
+  .quiz-head p{color:var(--ink-soft); margin-top:12px;}
+  .quiz-box{
+    max-width:680px; margin:0 auto; background:var(--paper);
+    border:1px solid var(--line); border-radius:6px; padding:40px;
+  }
+  .quiz-progress{
+    display:flex; gap:6px; margin-bottom:28px;
+  }
+  .quiz-progress span{
+    height:4px; flex:1; background:var(--line); border-radius:2px; overflow:hidden;
+  }
+  .quiz-progress span i{display:block; height:100%; width:0%; background:var(--primary); transition:width 0.3s;}
+  .quiz-progress span.done i{width:100%;}
+  .quiz-progress span.active i{width:60%;}
+  .q-text{font-family:'Spectral', serif; font-size:1.35rem; line-height:1.35; margin-bottom:24px;}
+  .q-options{display:flex; flex-direction:column; gap:10px;}
+  .q-option{
+    display:flex; align-items:center; gap:14px;
+    padding:15px 18px; border:1px solid var(--line); border-radius:5px;
+    background:var(--panel); text-align:left; font-size:0.98rem; color:var(--ink);
+    transition: border-color 0.15s, background 0.15s;
+    width:100%;
+  }
+  .q-option:hover{border-color:var(--primary);}
+  .q-option.selected{border-color:var(--accent); background:var(--accent-soft);}
+  .q-option .dot{
+    width:16px; height:16px; border-radius:50%; border:1.5px solid var(--line); flex-shrink:0;
+  }
+  .q-option.selected .dot{border-color:var(--accent); background:var(--accent);}
+  .quiz-nav{display:flex; justify-content:space-between; margin-top:30px; align-items:center;}
+  .quiz-nav .step-label{font-size:0.85rem; color:var(--ink-soft);}
+  .quiz-nav button:disabled{opacity:0.35; cursor:not-allowed;}
+
+  /* results */
+  .results-box{max-width:820px; margin:0 auto;}
+  .result-card{
+    display:flex; gap:24px; padding:26px 0; border-bottom:1px solid var(--line);
+    align-items:flex-start; flex-wrap:wrap;
+  }
+  .result-card:last-child{border-bottom:none;}
+  .result-rank{
+    font-family:'Spectral', serif; font-style:italic; font-size:1.6rem; color:var(--accent);
+    width:44px; flex-shrink:0;
+  }
+  .result-body{flex:1; min-width:240px;}
+  .result-body h3{font-size:1.3rem; margin-bottom:6px;}
+  .result-meta{font-size:0.86rem; color:var(--ink-soft); margin-bottom:10px;}
+  .result-why{font-size:0.92rem; color:var(--ink-soft);}
+  .result-why b{color:var(--ink); font-weight:600;}
+  .quiz-restart{text-align:center; margin-top:34px;}
+
+  /* ---------- SECTION SHARED ---------- */
+  section.page{padding:92px 0;}
+  .section-head{max-width:640px; margin-bottom:48px;}
+  .section-head h2{font-size:clamp(1.9rem,3.2vw,2.5rem);}
+  .section-head p{color:var(--ink-soft); margin-top:12px; font-size:1.03rem;}
+
+  /* ---------- EXPLORE CAREERS ---------- */
+  .filter-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:34px;}
+  .filter-chip{
+    padding:9px 18px; border:1px solid var(--line); border-radius:20px; font-size:0.87rem;
+    color:var(--ink-soft); transition:all 0.15s;
+  }
+  .filter-chip:hover{border-color:var(--primary); color:var(--primary);}
+  .filter-chip.active{background:var(--primary); border-color:var(--primary); color:#fff;}
+  .career-list{border-top:1px solid var(--line);}
+  .career-row{border-bottom:1px solid var(--line);}
+  .career-row-head{
+    display:flex; align-items:center; justify-content:space-between; gap:20px;
+    padding:22px 4px; width:100%; text-align:left; flex-wrap:wrap;
+  }
+  .career-row-head .name{font-family:'Spectral',serif; font-size:1.2rem;}
+  .career-row-head .tag-row{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+  .badge{
+    font-size:0.76rem; padding:4px 10px; border-radius:20px; background:var(--accent-soft);
+    color:var(--accent); white-space:nowrap;
+  }
+  .badge.edu{background:#E5EEEA; color:var(--primary-deep);}
+  .career-row-head .salary{font-weight:600; color:var(--primary-deep); font-size:0.95rem; white-space:nowrap;}
+  .career-row-head .chevron{font-size:1.1rem; color:var(--ink-soft); transition:transform 0.2s; flex-shrink:0;}
+  .career-row.open .chevron{transform:rotate(45deg);}
+  .career-detail{
+    display:none; padding: 0 4px 30px;
+  }
+  .career-row.open .career-detail{display:block;}
+  .detail-grid{display:flex; gap:36px; flex-wrap:wrap;}
+  .detail-col{flex:1 1 260px; min-width:240px;}
+  .detail-col h4{font-size:0.86rem; text-transform:none; color:var(--ink-soft); margin-bottom:8px; font-weight:600;}
+  .detail-col p, .detail-col ul{font-size:0.94rem; color:var(--ink);}
+  .detail-col ul{padding-left:18px; margin-top:4px;}
+  .detail-col li{margin-bottom:5px;}
+
+  /* ---------- ROADMAP ---------- */
+  .roadmap-tabs{display:flex; gap:8px; margin-bottom:34px; flex-wrap:wrap;}
+  .roadmap-tab{
+    padding:11px 22px; border:1px solid var(--line); border-radius:5px; font-weight:600;
+    font-size:0.92rem; color:var(--ink-soft);
+  }
+  .roadmap-tab.active{background:var(--primary); border-color:var(--primary); color:#fff;}
+  .roadmap-panel{display:none;}
+  .roadmap-panel.active{display:block;}
+  .roadmap-groups{display:flex; gap:32px; flex-wrap:wrap;}
+  .roadmap-group{flex:1 1 280px; min-width:260px;}
+  .roadmap-group h4{font-family:'Spectral',serif; font-style:italic; font-size:1.1rem; color:var(--primary-deep); margin-bottom:14px;}
+  .check-item{display:flex; align-items:flex-start; gap:11px; padding:9px 0; border-bottom:1px dashed var(--line-soft); font-size:0.94rem;}
+  .check-item:last-child{border-bottom:none;}
+  .check-item input{margin-top:4px; width:16px; height:16px; accent-color:var(--primary); flex-shrink:0;}
+  .check-item label.done{color:var(--ink-soft); text-decoration:line-through;}
+  .roadmap-progress{margin-top:30px; font-size:0.9rem; color:var(--ink-soft);}
+  .roadmap-actions{display:flex; gap:12px; margin-top:24px;}
+
+  /* ---------- RESOURCES ---------- */
+  .resource-grid{display:flex; gap:30px; flex-wrap:wrap;}
+  .resource-card{
+    flex:1 1 300px; min-width:260px; background:var(--panel); border:1px solid var(--line);
+    border-radius:6px; padding:26px;
+  }
+  .resource-card h3{font-size:1.1rem; margin-bottom:10px;}
+  .resource-card p{font-size:0.92rem; color:var(--ink-soft);}
+  .resource-card ul{margin-top:10px; padding-left:18px; font-size:0.92rem; color:var(--ink);}
+  .resource-card li{margin-bottom:6px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--line); padding:48px 0 32px; background:var(--panel);}
+  .footer-top{display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px; align-items:center; margin-bottom:24px;}
+  .footer-brand{font-family:'Spectral',serif; font-style:italic; font-size:1.2rem; color:var(--primary-deep);}
+  .footer-bottom{color:var(--ink-soft); font-size:0.84rem; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;}
+
+  /* print */
+  @media print{
+    header, .hero, .quiz-section, .resource-grid, footer, .nav-cta{display:none !important;}
+    body{background:#fff;}
+  }
+
+  @media (max-width:700px){
+    .detail-grid{flex-direction:column;}
+    .career-row-head .salary{order:3; width:100%;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a href="#top" class="brand">Vital Path<small>Vital Path Enterprises · Healthcare Career Planner</small></a>
+    <nav class="nav-links">
+      <a href="#quiz">Take the Quiz</a>
+      <a href="#explore">Explore Careers</a>
+      <a href="#roadmap">HS Roadmap</a>
+      <a href="#resources">Resources</a>
+    </nav>
+    <a class="nav-cta" href="#quiz">Find my fit</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <h1>Which healthcare career actually fits you?</h1>
+        <p class="lede">Nursing, medicine, dental, therapy, the lab, the ER — healthcare is dozens of different jobs wearing one label. Answer eight questions and get matched to the paths worth researching, plus a grade-by-grade plan to get there.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#quiz">Start the 3-minute quiz</a>
+          <a class="btn btn-secondary" href="#explore">Browse all careers</a>
+        </div>
+        <p class="hero-note">19 career paths · real BLS wage data · a roadmap for every grade</p>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 420 340" width="100%">
+          <path d="M20 300 C 90 300, 90 220, 160 220 S 230 140, 300 140 S 370 60, 400 40" fill="none" stroke="#1F5C57" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 12"/>
+          <circle cx="20" cy="300" r="7" fill="#8C3B54"/>
+          <circle cx="160" cy="220" r="6" fill="#1F5C57"/>
+          <circle cx="300" cy="140" r="6" fill="#1F5C57"/>
+          <circle cx="400" cy="40" r="8" fill="#8C3B54"/>
+          <text x="30" y="322" font-family="Work Sans, sans-serif" font-size="13" fill="#52605A">9th grade</text>
+          <text x="130" y="245" font-family="Work Sans, sans-serif" font-size="13" fill="#52605A">Shadow &amp; certify</text>
+          <text x="255" y="165" font-family="Work Sans, sans-serif" font-size="13" fill="#52605A">Apply to programs</text>
+          <text x="320" y="30" font-family="Work Sans, sans-serif" font-size="13" fill="#52605A">Your career</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="quiz-section" id="quiz">
+    <div class="wrap">
+      <div class="quiz-head">
+        <h2>Find your fit</h2>
+        <p>There's no wrong answer — just pick the option that sounds most like you.</p>
+      </div>
+      <div class="quiz-box" id="quizBox"></div>
+    </div>
+  </section>
+
+  <!-- EXPLORE CAREERS -->
+  <section class="page" id="explore">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Every path, laid out</h2>
+        <p>Filter by how many years of training you're realistic about, then tap a career to see the full picture — education, timeline, pay, and what the job is actually like day to day.</p>
+      </div>
+      <div class="filter-row" id="filterRow"></div>
+      <div class="career-list" id="careerList"></div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section class="page" id="roadmap" style="background:var(--panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Your high school roadmap</h2>
+        <p>What to actually do, grade by grade, so your application and your resume tell the same story.</p>
+      </div>
+      <div class="roadmap-tabs" id="roadmapTabs"></div>
+      <div id="roadmapPanels"></div>
+      <div class="roadmap-progress" id="roadmapProgress"></div>
+      <div class="roadmap-actions">
+        <button class="btn btn-secondary" onclick="window.print()">Print this checklist</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESOURCES -->
+  <section class="page" id="resources">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Resources worth knowing about</h2>
+        <p>Organizations, programs, and accreditation checks that come up again and again in healthcare career planning.</p>
+      </div>
+      <div class="resource-grid">
+        <div class="resource-card">
+          <h3>Get experience now</h3>
+          <p>Programs built for students still in high school.</p>
+          <ul>
+            <li><b>HOSA – Future Health Professionals:</b> a national student organization with local chapters, competitions, and healthcare-career events.</li>
+            <li><b>Hospital volunteer ("candy striper") programs:</b> most hospitals and clinics take teen volunteers 14+; ask your local hospital's volunteer services office.</li>
+            <li><b>CNA certification courses:</b> often open to 16–18 year-olds through a community college or career-tech center — the fastest real clinical credential you can earn in high school.</li>
+          </ul>
+        </div>
+        <div class="resource-card">
+          <h3>Check before you apply</h3>
+          <p>Accreditation is the difference between a credential that transfers and one that doesn't.</p>
+          <ul>
+            <li><b>Nursing programs:</b> look for CCNE or ACEN accreditation.</li>
+            <li><b>Allied health (rad tech, surgical tech, respiratory, etc.):</b> look for CAAHEP accreditation.</li>
+            <li><b>Dental hygiene/dentistry:</b> look for CODA accreditation.</li>
+            <li><b>Pharmacy:</b> look for ACPE accreditation.</li>
+          </ul>
+        </div>
+        <div class="resource-card">
+          <h3>Paying for it</h3>
+          <p>Healthcare has more built-in financial support than most fields.</p>
+          <ul>
+            <li><b>NHSC Scholarships & Loan Repayment:</b> federal programs that cover tuition or repay loans in exchange for working in an underserved area after graduating.</li>
+            <li><b>Hospital tuition assistance:</b> many hospital systems pay for CNA-to-RN or RN-to-BSN progression for their own employees.</li>
+            <li><b>Community college transfer paths:</b> starting at a two-year school and transferring is often the lowest-debt route into a four-year clinical degree.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">Vital Path</div>
+      <div style="font-size:0.86rem; color:var(--ink-soft);">Vital Path Enterprises · razeentalha25@gmail.com · [your website]</div>
+    </div>
+    <div class="footer-bottom">
+      <span>Salary figures: U.S. Bureau of Labor Statistics, Occupational Employment and Wage Statistics, May 2025.</span>
+      <span>© 2026 Vital Path</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ========================= DATA =========================
+const CAREERS = [
+  {id:'cna', name:'Certified Nursing Assistant (CNA)', clusters:['HANDS','HELPING'], eduYears:0.4,
+    eduPath:'State-approved CNA program (4–12 weeks) + competency exam', timeline:'As little as 1–3 months',
+    license:'State CNA certification exam', salary:'$42,260 median/year',
+    outlook:'Steady demand everywhere care is delivered — hospitals, nursing homes, home health.',
+    dayInLife:'Hands-on daily care: bathing, feeding, moving patients, taking vitals, and being the staff member patients see most.',
+    hsPrep:['Biology / anatomy basics','Look for a CNA program at your local career-tech center — many accept 16–18 year-olds','Volunteer at a nursing home or hospital'],
+    goodFit:'You want to be working with real patients as fast as possible and don\u2019t mind physical, hands-on work.'},
+
+  {id:'emt', name:'Emergency Medical Technician (EMT)', clusters:['EMERGENCY','HANDS'], eduYears:0.6,
+    eduPath:'EMT-Basic certificate program (roughly 6 months–1 year)', timeline:'6–12 months',
+    license:'National Registry (NREMT) certification exam', salary:'$44,470 median/year',
+    outlook:'Growing faster than average as EMS and urgent care expand.',
+    dayInLife:'Responding to 911 calls, stabilizing patients on scene, and transporting them — no two shifts are the same.',
+    hsPrep:['Get CPR/First Aid certified now','Anatomy & Physiology, if offered','Ride-along or volunteer with a local fire/EMS department if allowed'],
+    goodFit:'You want fast-paced, unpredictable work and can stay calm when things get chaotic.'},
+
+  {id:'paramedic', name:'Paramedic', clusters:['EMERGENCY','HANDS'], eduYears:1.8,
+    eduPath:'EMT certification, then a paramedic program (6 months–2 years)', timeline:'About 2 years total',
+    license:'NREMT-Paramedic certification', salary:'$60,600 median/year',
+    outlook:'Strong demand; paramedics can also move into fire departments, flight crews, or nursing later.',
+    dayInLife:'Everything an EMT does, plus advanced skills — IVs, medications, reading cardiac rhythms — often as the lead on scene.',
+    hsPrep:['Start as an EMT first','Chemistry and anatomy courses','Physical fitness — the job is physically demanding'],
+    goodFit:'You loved the idea of EMT work but want more clinical responsibility and a higher ceiling.'},
+
+  {id:'lpn', name:'Licensed Practical / Vocational Nurse (LPN/LVN)', clusters:['HANDS','HELPING'], eduYears:1,
+    eduPath:'LPN/LVN diploma program (about 1 year)', timeline:'About 1 year',
+    license:'NCLEX-PN exam', salary:'$64,400 median/year',
+    outlook:'Stable role in nursing homes, clinics, and home health; a common stepping stone toward RN.',
+    dayInLife:'Basic nursing care under an RN or physician — medications, wound care, monitoring patients.',
+    hsPrep:['Biology and health science electives','Volunteer or work as a CNA first — many LPN programs favor applicants with patient-care experience'],
+    goodFit:'You want real nursing responsibility in about a year, with the option to bridge to RN later.'},
+
+  {id:'surgtech', name:'Surgical Technologist', clusters:['PRECISION','HANDS'], eduYears:1.3,
+    eduPath:'Accredited surgical technology program (9 months–2 years)', timeline:'About 1–2 years',
+    license:'Certified Surgical Technologist (CST) exam', salary:'$64,650 median/year',
+    outlook:'Consistent demand tied to the volume of surgeries performed nationwide.',
+    dayInLife:'Preparing operating rooms, sterilizing instruments, and handing tools to surgeons mid-procedure — precision under pressure.',
+    hsPrep:['Anatomy & Physiology','Any class that rewards steady hands and exact procedure (shop, chemistry lab)','Shadow in an OR if your local hospital allows it'],
+    goodFit:'You like being in the middle of high-stakes medical work but would rather assist than lead the procedure.'},
+
+  {id:'labtech', name:'Clinical Laboratory Technologist/Technician', clusters:['SCIENCE','PRECISION'], eduYears:2.5,
+    eduPath:'Associate\u2019s degree (technician, ~2 yrs) or Bachelor\u2019s (technologist, ~4 yrs)', timeline:'2–4 years',
+    license:'ASCP certification exam (most employers expect this)', salary:'$62,930 median/year',
+    outlook:'Behind-the-scenes but essential — every diagnosis runs through a lab somewhere.',
+    dayInLife:'Running blood, tissue, and fluid tests that doctors use to diagnose patients — almost no direct patient contact.',
+    hsPrep:['Chemistry and biology — the more the better','Statistics','A part-time job or volunteer role in a lab setting, if you can find one'],
+    goodFit:'You like science and problem-solving but don\u2019t need face-to-face patient interaction to feel fulfilled.'},
+
+  {id:'rn', name:'Registered Nurse (RN)', clusters:['HANDS','HELPING','EMERGENCY'], eduYears:3,
+    eduPath:'Associate\u2019s degree (ADN, ~2–3 yrs) or Bachelor\u2019s (BSN, ~4 yrs)', timeline:'2–4 years',
+    license:'NCLEX-RN exam', salary:'$97,550 median/year',
+    outlook:'The largest healthcare occupation in the country, with strong demand in nearly every setting.',
+    dayInLife:'Assessing patients, administering medication, coordinating care, and acting as the main link between patients and physicians.',
+    hsPrep:['Biology, chemistry, anatomy','Statistics (nursing programs almost always require it)','Volunteer or work as a CNA to strengthen your application'],
+    goodFit:'You want broad options — bedside care, specialties, management, or further schooling — from one flexible degree.'},
+
+  {id:'radtech', name:'Radiologic Technologist', clusters:['SCIENCE','PRECISION'], eduYears:2,
+    eduPath:'Accredited associate\u2019s degree program (~2 years)', timeline:'About 2 years',
+    license:'ARRT certification exam', salary:'$80,110 median/year',
+    outlook:'Growing as imaging (X-ray, CT, MRI) becomes more central to diagnosis.',
+    dayInLife:'Positioning patients and operating imaging equipment to capture the scans doctors read to diagnose injuries and disease.',
+    hsPrep:['Physics and chemistry','Geometry/trigonometry (positioning and dosing involve real math)','Shadow in a hospital imaging department if possible'],
+    goodFit:'You like technology and precision, and want solid pay without a 4-year degree.'},
+
+  {id:'rt', name:'Respiratory Therapist', clusters:['SCIENCE','HANDS','EMERGENCY'], eduYears:2,
+    eduPath:'CoARC-accredited associate\u2019s degree (~2 years)', timeline:'About 2 years',
+    license:'NBRC credentialing exams', salary:'$82,280 median/year',
+    outlook:'In high demand, especially in ICUs and for patients with chronic lung disease.',
+    dayInLife:'Managing ventilators, running breathing treatments, and responding to codes when a patient can\u2019t breathe on their own.',
+    hsPrep:['Biology, chemistry, physics','Comfort with equipment and technology','Shadow in an ICU or pulmonary unit if possible'],
+    goodFit:'You want the intensity of critical care with a shorter path than nursing or medical school.'},
+
+  {id:'sono', name:'Diagnostic Medical Sonographer', clusters:['SCIENCE','PRECISION'], eduYears:2.5,
+    eduPath:'Accredited associate\u2019s degree (~2 years) or certificate after a related degree', timeline:'About 2 years',
+    license:'ARDMS certification exam', salary:'$96,590 median/year',
+    outlook:'Growing quickly as ultrasound use expands beyond OB into cardiac and vascular imaging.',
+    dayInLife:'Operating ultrasound equipment to capture images used to diagnose everything from pregnancies to heart conditions.',
+    hsPrep:['Anatomy & Physiology, physics','Fine motor skill and spatial reasoning matter — art or drafting classes can help','Shadow a sonographer if your hospital allows it'],
+    goodFit:'You want strong pay and hands-on tech work without committing to 4+ years of school.'},
+
+  {id:'ot', name:'Occupational Therapist', clusters:['HELPING','HANDS'], eduYears:6.5,
+    eduPath:'Bachelor\u2019s degree, then a Doctorate of Occupational Therapy (OTD) or Master\u2019s (most programs now require the doctorate)', timeline:'6–7 years',
+    license:'NBCOT certification exam', salary:'$100,330 median/year',
+    outlook:'Growing steadily as demand rises for rehab and developmental therapy services.',
+    dayInLife:'Helping patients — from stroke survivors to children with developmental delays — relearn everyday skills like dressing, writing, or cooking.',
+    hsPrep:['Psychology and biology','Volunteer with people with disabilities or in a rehab setting','Patience and creativity matter as much as science here'],
+    goodFit:'You want a long-term coaching relationship with patients, not a quick procedure and done.'},
+
+  {id:'pt', name:'Physical Therapist', clusters:['HELPING','HANDS'], eduYears:7,
+    eduPath:'Bachelor\u2019s degree, then a Doctor of Physical Therapy (DPT) program (~3 years)', timeline:'About 7 years',
+    license:'National Physical Therapy Examination (NPTE)', salary:'$102,760 median/year',
+    outlook:'Strong, steady growth tied to sports medicine, aging populations, and post-surgical rehab.',
+    dayInLife:'Designing and guiding exercise and movement plans to help patients recover strength and mobility after injury or surgery.',
+    hsPrep:['Anatomy, biology, physics','Play a sport or volunteer in a training room/PT clinic — DPT programs value hands-on exposure','Strong GPA — DPT admissions are competitive'],
+    goodFit:'You\u2019re drawn to sports medicine or rehab and are willing to put in 7 years for a doctorate-level title.'},
+
+  {id:'slp', name:'Speech-Language Pathologist', clusters:['HELPING','SCIENCE'], eduYears:6,
+    eduPath:'Bachelor\u2019s degree, then a Master\u2019s in speech-language pathology (~2 years)', timeline:'About 6 years',
+    license:'Praxis exam + clinical fellowship year', salary:'$89,290 median/year',
+    outlook:'Growing steadily in schools, hospitals, and private practice.',
+    dayInLife:'Helping patients of all ages — from toddlers to stroke survivors — with speech, language, and swallowing difficulties.',
+    hsPrep:['Psychology, biology, linguistics if offered','Volunteer with kids with speech delays or in a special-ed classroom','Strong communication skills matter for admissions'],
+    goodFit:'You like the science of communication and want one-on-one work without the physical demands of nursing or PT.'},
+
+  {id:'pa', name:'Physician Assistant (PA)', clusters:['SCIENCE','HANDS','HELPING'], eduYears:6,
+    eduPath:'Bachelor\u2019s degree + healthcare experience, then a PA program (~2–3 years)', timeline:'About 6 years',
+    license:'PANCE certification exam', salary:'$135,880 median/year',
+    outlook:'One of the fastest-growing healthcare occupations, with expanding scope of practice.',
+    dayInLife:'Examining patients, diagnosing, and prescribing treatment under physician collaboration — similar scope to a doctor in many settings.',
+    hsPrep:['Rigorous science courses — chemistry, biology, physics','PA programs require hundreds/thousands of hours of hands-on healthcare experience before applying, so start as a CNA, EMT, or scribe early','Strong GPA from day one — this is a competitive path'],
+    goodFit:'You want near-physician responsibility without a decade of school, and you don\u2019t mind collecting clinical hours for years first.'},
+
+  {id:'pharmd', name:'Pharmacist', clusters:['SCIENCE','PRECISION','BUSINESS'], eduYears:7,
+    eduPath:'Undergraduate coursework, then a Doctor of Pharmacy (PharmD) program (4 years)', timeline:'6–8 years',
+    license:'NAPLEX and state law exam', salary:'$140,910 median/year',
+    outlook:'Stable demand across retail, hospital, and increasingly clinical/consulting roles.',
+    dayInLife:'Verifying prescriptions, catching dangerous drug interactions, counseling patients, and in hospitals, working directly with medical teams.',
+    hsPrep:['Chemistry (a lot of it) and biology','Math through pre-calculus at least','A part-time job at a pharmacy counter is one of the best early signals'],
+    goodFit:'You like precise science and want a doctorate-level healthcare title without direct hands-on procedures.'},
+
+  {id:'dds', name:'Dentist', clusters:['PRECISION','HANDS','BUSINESS'], eduYears:8,
+    eduPath:'Bachelor\u2019s degree, then dental school (DDS or DMD, 4 years)', timeline:'About 8 years',
+    license:'National Board Dental Examinations + state licensure', salary:'$166,300 median/year',
+    outlook:'Steady demand; many dentists also run their own practice, adding a business dimension.',
+    dayInLife:'Diagnosing and treating teeth and gums — fillings, extractions, and increasingly cosmetic and preventive care — plus often managing a practice.',
+    hsPrep:['Chemistry, biology — dental school admissions are GPA- and science-heavy','Fine motor skill practice (art, instruments, detailed craft work)','Shadow a dentist — most dental schools expect it'],
+    goodFit:'You want precise, hands-on clinical work and like the idea of eventually owning a business.'},
+
+  {id:'md', name:'Physician (MD/DO)', clusters:['SCIENCE','HANDS','HELPING'], eduYears:12,
+    eduPath:'Bachelor\u2019s degree, medical school (4 years), then residency (3–7 years depending on specialty)', timeline:'11–15 years',
+    license:'USMLE or COMLEX exams + board certification in a specialty', salary:'$200,000+, varies widely by specialty',
+    outlook:'Consistently strong demand, especially in primary care and rural areas.',
+    dayInLife:'Diagnosing and treating patients with the broadest scope of any clinical role — the specific day depends entirely on the specialty chosen.',
+    hsPrep:['The strongest science courses your school offers — biology, chemistry, physics','Research or clinical volunteering starting now — medical school applications reward years of sustained commitment','Be honest with yourself about the timeline: this is the longest path on this list'],
+    goodFit:'You\u2019re willing to spend over a decade in training for the widest possible scope of practice and specialization options.'},
+
+  {id:'hsm', name:'Medical & Health Services Manager', clusters:['BUSINESS','HELPING'], eduYears:5,
+    eduPath:'Bachelor\u2019s degree (health administration, business) — many managers also earn a Master\u2019s (MHA/MBA)', timeline:'4–6 years',
+    license:'No universal license; some states require licensure for nursing home administrators specifically', salary:'$123,860 median/year',
+    outlook:'Growing quickly as healthcare organizations get larger and more complex to run.',
+    dayInLife:'Running a clinic, department, or hospital — budgets, staffing, compliance, and making sure clinical staff can do their jobs well.',
+    hsPrep:['Business, economics, statistics','Biology/health science so you understand the clinical side you\u2019ll be managing','Leadership roles in clubs or a part-time job with real responsibility'],
+    goodFit:'You want to be in healthcare without being the one doing procedures — you\u2019d rather build the systems that let others do theirs.'},
+];
+
+const EDU_FILTERS = [
+  {key:'all', label:'All paths'},
+  {key:'fast', label:'Under 2 years'},
+  {key:'assoc', label:'2–3 years'},
+  {key:'bach', label:'4–5 years'},
+  {key:'grad', label:'6+ years'},
+];
+function eduBucket(y){
+  if(y < 2) return 'fast';
+  if(y < 3.5) return 'assoc';
+  if(y < 5.5) return 'bach';
+  return 'grad';
+}
+
+const CLUSTER_LABELS = {
+  HANDS: 'hands-on patient care',
+  SCIENCE: 'science and lab-driven problem solving',
+  EMERGENCY: 'fast-paced, high-adrenaline work',
+  PRECISION: 'precise, detail-heavy technical work',
+  HELPING: 'long-term relationships and coaching',
+  BUSINESS: 'running systems and leading operations',
+};
+
+const QUESTIONS = [
+  {q:'When you picture yourself at work, what\u2019s actually happening?', opts:[
+    {t:'I\u2019m right there with a patient — hands-on, giving care and comfort', tag:'HANDS'},
+    {t:'I\u2019m in a lab, running tests, and the answer is in the data', tag:'SCIENCE'},
+    {t:'It\u2019s an emergency and I\u2019m the calm one making fast calls', tag:'EMERGENCY'},
+    {t:'I\u2019m doing precise, technical work — steady hands, exact measurements', tag:'PRECISION'},
+    {t:'I\u2019m talking someone through a hard problem, one-on-one', tag:'HELPING'},
+    {t:'I\u2019m running the operation — schedules, budgets, keeping things working', tag:'BUSINESS'},
+  ]},
+  {q:'Which of these would stress you out the least, day after day?', opts:[
+    {t:'Blood, needles, and bodily fluids, up close', tag:'HANDS'},
+    {t:'A chaotic ER at 2am', tag:'EMERGENCY'},
+    {t:'Hours of quiet, careful lab work', tag:'SCIENCE'},
+    {t:'A mistake of a millimeter actually mattering', tag:'PRECISION'},
+    {t:'Sitting with someone in emotional distress for an hour', tag:'HELPING'},
+  ]},
+  {q:'Pick the class you\u2019d actually enjoy.', opts:[
+    {t:'Anatomy & Physiology', tag:'HANDS'},
+    {t:'Chemistry', tag:'SCIENCE'},
+    {t:'Psychology', tag:'HELPING'},
+    {t:'Business or Statistics', tag:'BUSINESS'},
+    {t:'A hands-on class where precision matters (shop, art, drafting)', tag:'PRECISION'},
+  ]},
+  {q:'How do you feel about unpredictable schedules — nights, weekends, being on-call?', opts:[
+    {t:'Bring it on, I like variety and adrenaline', tag:'EMERGENCY'},
+    {t:'I\u2019d rather have a steady, predictable schedule', tag:'BUSINESS'},
+    {t:'Fine, as long as I\u2019m helping people directly', tag:'HELPING'},
+    {t:'Fine, if I\u2019m doing focused technical work', tag:'PRECISION'},
+  ]},
+  {q:'What sounds like the better work day?', opts:[
+    {t:'Building a relationship with the same patients over months or years', tag:'HELPING'},
+    {t:'A different case every day, some of them urgent', tag:'EMERGENCY'},
+    {t:'Getting one procedure or scan exactly right, over and over', tag:'PRECISION'},
+    {t:'Solving a puzzle in a lab that nobody else caught', tag:'SCIENCE'},
+  ]},
+  {q:'Which team would you rather be on?', opts:[
+    {t:'The team keeping a hospital or clinic running smoothly', tag:'BUSINESS'},
+    {t:'The team physically caring for patients at the bedside', tag:'HANDS'},
+    {t:'The team researching and testing behind the scenes', tag:'SCIENCE'},
+    {t:'The team responding first to emergencies', tag:'EMERGENCY'},
+  ]},
+  {q:'People who know you say you\u2019re the type to...', opts:[
+    {t:'Stay calm when everyone else panics', tag:'EMERGENCY'},
+    {t:'Notice tiny details everyone else misses', tag:'PRECISION'},
+    {t:'Be the one people talk to about their problems', tag:'HELPING'},
+    {t:'Organize anything chaotic into a system', tag:'BUSINESS'},
+    {t:'Ask "but why does that actually work?"', tag:'SCIENCE'},
+  ]},
+  {q:'Be honest: how many years after high school are you realistically willing to spend training before your first real job in the field?', opts:[
+    {t:'As short as possible — a certificate, a year or less', years:0.5},
+    {t:'About 2 years', years:2},
+    {t:'About 4 years', years:4.5},
+    {t:'6 years or more — I\u2019m playing the long game for the right title', years:8},
+  ]},
+];
+
+const ROADMAP = {
+  '9th Grade': {
+    'Coursework': ['Take biology and, if offered, an intro health science or anatomy elective', 'Start building a strong GPA now — it matters for every path on this list', 'Take the most rigorous math track you can handle'],
+    'Experience': ['Get CPR/First Aid certified (many Red Cross chapters offer teen courses)', 'Join HOSA or a health science club if your school has one', 'Ask your school counselor about a health science career-tech pathway'],
+    'Exploration': ['Do informational interviews with any healthcare worker you already know — family friends, relatives, your own doctor', 'Start a running list of careers that interest you and why'],
+  },
+  '10th Grade': {
+    'Coursework': ['Take chemistry', 'Keep math moving toward pre-calculus', 'Add psychology if it\u2019s offered as an elective'],
+    'Experience': ['Start volunteering at a hospital, clinic, or nursing home (many accept volunteers starting at 14–16)', 'Look into a CNA certification course through a career-tech center if your state allows it at your age', 'Shadow one healthcare professional, even for a single day'],
+    'Exploration': ['Take this planner\u2019s quiz again — your answers may change as you learn more', 'Research 2–3 specific colleges or programs for your top career matches'],
+  },
+  '11th Grade': {
+    'Coursework': ['Take physics and/or anatomy & physiology if available', 'Take the PSAT/SAT or ACT prep seriously — most competitive programs care about scores', 'Consider AP Biology or AP Chemistry if you\u2019re aiming for a 4+ year path'],
+    'Experience': ['Get your CNA or EMT certification this year if your path calls for it', 'Take on a real responsibility in a club or job — programs look for leadership, not just membership', 'Start collecting names for letters of recommendation'],
+    'Exploration': ['Narrow your college list and check accreditation for any program you\u2019re serious about', 'Research financial aid and scholarships specific to healthcare (see Resources)', 'Draft a personal statement — start now, not senior fall'],
+  },
+  '12th Grade': {
+    'Coursework': ['Keep your science grades up through senior year — programs do check final transcripts', 'Finish any AP exams relevant to your path'],
+    'Experience': ['Keep volunteering or working in a clinical setting through graduation — consistency matters more than hours logged in one summer', 'Request letters of recommendation early — give people 4+ weeks'],
+    'Applications': ['Submit college and/or direct-entry program applications by their earliest deadlines', 'Apply for healthcare-specific scholarships (hospital auxiliaries, HOSA, professional associations)', 'If your path requires a CNA/EMT certification, make sure it\u2019s active before you enroll'],
+  },
+};
+
+// ========================= QUIZ LOGIC =========================
+let qIndex = 0;
+const answers = new Array(QUESTIONS.length).fill(null);
+
+function renderQuiz(){
+  const box = document.getElementById('quizBox');
+  if(qIndex >= QUESTIONS.length){ renderResults(box); return; }
+  const q = QUESTIONS[qIndex];
+  let progressHTML = QUESTIONS.map((_,i)=>{
+    let cls = i < qIndex ? 'done' : (i===qIndex ? 'active':'');
+    return `<span class="${cls}"><i></i></span>`;
+  }).join('');
+  let optsHTML = q.opts.map((o,i)=>{
+    const selected = answers[qIndex]===i ? 'selected':'';
+    return `<button class="q-option ${selected}" onclick="selectOpt(${i})"><span class="dot"></span>${o.t}</button>`;
+  }).join('');
+  box.innerHTML = `
+    <div class="quiz-progress">${progressHTML}</div>
+    <div class="q-text">${q.q}</div>
+    <div class="q-options">${optsHTML}</div>
+    <div class="quiz-nav">
+      <button class="btn btn-secondary" onclick="prevQ()" ${qIndex===0?'disabled':''}>Back</button>
+      <span class="step-label">Question ${qIndex+1} of ${QUESTIONS.length}</span>
+      <button class="btn btn-primary" onclick="nextQ()" ${answers[qIndex]===null?'disabled':''}>${qIndex===QUESTIONS.length-1 ? 'See my results':'Next'}</button>
+    </div>
+  `;
+}
+function selectOpt(i){ answers[qIndex]=i; renderQuiz(); }
+function nextQ(){ if(answers[qIndex]===null) return; qIndex++; renderQuiz(); }
+function prevQ(){ if(qIndex>0){ qIndex--; renderQuiz(); } }
+
+function renderResults(box){
+  const tally = {HANDS:0,SCIENCE:0,EMERGENCY:0,PRECISION:0,HELPING:0,BUSINESS:0};
+  let userYears = 3;
+  QUESTIONS.forEach((q,i)=>{
+    const opt = q.opts[answers[i]];
+    if(opt.tag) tally[opt.tag]++;
+    if(opt.years !== undefined) userYears = opt.years;
+  });
+  const scored = CAREERS.map(c=>{
+    let clusterScore = c.clusters.reduce((s,cl)=>s+tally[cl],0);
+    let eduPenalty = Math.abs(c.eduYears - userYears) * 0.45;
+    return {...c, score: clusterScore - eduPenalty};
+  }).sort((a,b)=>b.score-a.score);
+  const top3 = scored.slice(0,3);
+
+  const cardsHTML = top3.map((c,i)=>{
+    const matchedClusters = c.clusters.filter(cl=>tally[cl]>0).map(cl=>CLUSTER_LABELS[cl]);
+    const whyText = matchedClusters.length
+      ? `Matches your interest in <b>${matchedClusters.join(' and ')}</b>, and fits the training timeline you said you\u2019re realistic about.`
+      : `Fits the training timeline you said you\u2019re realistic about.`;
+    return `
+      <div class="result-card">
+        <div class="result-rank">${i+1}</div>
+        <div class="result-body">
+          <h3>${c.name}</h3>
+          <div class="result-meta">${c.eduPath} · ${c.salary}</div>
+          <div class="result-why">${whyText}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  box.innerHTML = `
+    <div class="results-box">
+      <h3 style="font-size:1.4rem; margin-bottom:6px;">Your top matches</h3>
+      <p style="color:var(--ink-soft); margin-bottom:20px; font-size:0.95rem;">Based on your answers — see the full profile for any of these in the career directory below.</p>
+      ${cardsHTML}
+      <div class="quiz-restart">
+        <button class="btn btn-secondary" onclick="restartQuiz()">Retake the quiz</button>
+        <a class="btn btn-primary" href="#explore" style="margin-left:10px;">Browse all careers</a>
+      </div>
+    </div>
+  `;
+}
+function restartQuiz(){ qIndex=0; answers.fill(null); renderQuiz(); }
+renderQuiz();
+
+// ========================= EXPLORE CAREERS =========================
+let activeFilter = 'all';
+function renderFilters(){
+  const row = document.getElementById('filterRow');
+  row.innerHTML = EDU_FILTERS.map(f=>
+    `<button class="filter-chip ${f.key===activeFilter?'active':''}" onclick="setFilter('${f.key}')">${f.label}</button>`
+  ).join('');
+}
+function setFilter(key){ activeFilter=key; renderFilters(); renderCareerList(); }
+function renderCareerList(){
+  const list = document.getElementById('careerList');
+  const filtered = CAREERS.filter(c => activeFilter==='all' || eduBucket(c.eduYears)===activeFilter);
+  list.innerHTML = filtered.map(c=>`
+    <div class="career-row" id="row-${c.id}">
+      <button class="career-row-head" onclick="toggleRow('${c.id}')">
+        <div>
+          <div class="name">${c.name}</div>
+          <div class="tag-row" style="margin-top:6px;">
+            <span class="badge edu">${c.timeline}</span>
+            ${c.clusters.slice(0,2).map(cl=>`<span class="badge">${CLUSTER_LABELS[cl]}</span>`).join('')}
+          </div>
+        </div>
+        <div class="salary">${c.salary}</div>
+        <div class="chevron">+</div>
+      </button>
+      <div class="career-detail">
+        <div class="detail-grid">
+          <div class="detail-col">
+            <h4>Education path</h4>
+            <p>${c.eduPath}</p>
+            <h4 style="margin-top:16px;">Licensing</h4>
+            <p>${c.license}</p>
+          </div>
+          <div class="detail-col">
+            <h4>What the job is like</h4>
+            <p>${c.dayInLife}</p>
+            <h4 style="margin-top:16px;">Outlook</h4>
+            <p>${c.outlook}</p>
+          </div>
+          <div class="detail-col">
+            <h4>Start in high school</h4>
+            <ul>${c.hsPrep.map(p=>`<li>${p}</li>`).join('')}</ul>
+          </div>
+        </div>
+        <p style="margin-top:16px; font-style:italic; font-family:'Spectral',serif; color:var(--primary-deep);">Good fit if: ${c.goodFit}</p>
+      </div>
+    </div>
+  `).join('');
+}
+function toggleRow(id){
+  document.getElementById('row-'+id).classList.toggle('open');
+}
+renderFilters();
+renderCareerList();
+
+// ========================= ROADMAP =========================
+let activeGrade = '9th Grade';
+const checkedState = {};
+function renderRoadmapTabs(){
+  const tabs = document.getElementById('roadmapTabs');
+  tabs.innerHTML = Object.keys(ROADMAP).map(g=>
+    `<button class="roadmap-tab ${g===activeGrade?'active':''}" onclick="setGrade('${g}')">${g}</button>`
+  ).join('');
+}
+function setGrade(g){ activeGrade=g; renderRoadmapTabs(); renderRoadmapPanels(); }
+function renderRoadmapPanels(){
+  const panels = document.getElementById('roadmapPanels');
+  const groups = ROADMAP[activeGrade];
+  panels.innerHTML = `<div class="roadmap-panel active"><div class="roadmap-groups">` +
+    Object.entries(groups).map(([cat,items])=>`
+      <div class="roadmap-group">
+        <h4>${cat}</h4>
+        ${items.map((it,idx)=>{
+          const key = activeGrade+'|'+cat+'|'+idx;
+          const checked = checkedState[key] ? 'checked' : '';
+          return `<div class="check-item">
+            <input type="checkbox" id="${key}" ${checked} onchange="toggleCheck('${key}')">
+            <label for="${key}" class="${checkedState[key]?'done':''}">${it}</label>
+          </div>`;
+        }).join('')}
+      </div>
+    `).join('') + `</div></div>`;
+  updateProgress();
+}
+function toggleCheck(key){
+  checkedState[key] = !checkedState[key];
+  renderRoadmapPanels();
+}
+function updateProgress(){
+  const total = Object.values(ROADMAP).reduce((s,g)=>s+Object.values(g).reduce((s2,arr)=>s2+arr.length,0),0);
+  const done = Object.values(checkedState).filter(Boolean).length;
+  document.getElementById('roadmapProgress').textContent = `${done} of ${total} steps checked off across all four years.`;
+}
+renderRoadmapTabs();
+renderRoadmapPanels();
+</script>
+
+</body>
+</html>
