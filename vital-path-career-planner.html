@@ -208,6 +208,32 @@
   .roadmap-progress{margin-top:30px; font-size:0.9rem; color:var(--ink-soft);}
   .roadmap-actions{display:flex; gap:12px; margin-top:24px;}
 
+  /* ---------- WORKBOOK CTA ---------- */
+  .workbook-band{
+    background: var(--primary-deep); color:#fff;
+    padding: 72px 0;
+  }
+  .workbook-inner{display:flex; gap:48px; align-items:center; flex-wrap:wrap;}
+  .workbook-copy{flex:1 1 440px; min-width:280px;}
+  .workbook-copy h2{color:#fff; font-size:clamp(1.8rem,3vw,2.3rem);}
+  .workbook-copy p{color:#D7E0DC; margin-top:14px; font-size:1.04rem; max-width:48ch;}
+  .workbook-list{margin-top:20px; list-style:none; padding:0;}
+  .workbook-list li{
+    color:#E9EFEC; font-size:0.95rem; padding:7px 0 7px 26px; position:relative;
+  }
+  .workbook-list li::before{
+    content:"✓"; position:absolute; left:0; color:var(--accent); font-weight:700;
+  }
+  .workbook-cta{flex:0 0 auto;}
+  .workbook-card{
+    background:#fff; color:var(--ink); border-radius:6px; padding:32px 30px;
+    min-width:260px; text-align:center;
+  }
+  .workbook-card .label{font-family:'Spectral',serif; font-style:italic; color:var(--ink-soft); font-size:0.95rem;}
+  .workbook-card h3{font-size:1.3rem; margin-top:6px;}
+  .workbook-card .btn-primary{display:block; margin-top:18px; width:100%;}
+  .workbook-card .fine{margin-top:12px; font-size:0.8rem; color:var(--ink-soft);}
+
   /* ---------- RESOURCES ---------- */
   .resource-grid{display:flex; gap:30px; flex-wrap:wrap;}
   .resource-card{
@@ -227,7 +253,7 @@
 
   /* print */
   @media print{
-    header, .hero, .quiz-section, .resource-grid, footer, .nav-cta{display:none !important;}
+    header, .hero, .quiz-section, .resource-grid, .workbook-band, footer, .nav-cta{display:none !important;}
     body{background:#fff;}
   }
 
@@ -241,11 +267,12 @@
 
 <header>
   <div class="nav">
-    <a href="#top" class="brand">Vital Path<small>Vital Path Enterprises · Healthcare Career Planner</small></a>
+    <a href="#top" class="brand">Vital Path<small>Healthcare Career Planner</small></a>
     <nav class="nav-links">
       <a href="#quiz">Take the Quiz</a>
       <a href="#explore">Explore Careers</a>
       <a href="#roadmap">HS Roadmap</a>
+      <a href="#workbook">Get the Workbook</a>
       <a href="#resources">Resources</a>
     </nav>
     <a class="nav-cta" href="#quiz">Find my fit</a>
@@ -264,7 +291,7 @@
           <a class="btn btn-primary" href="#quiz">Start the 3-minute quiz</a>
           <a class="btn btn-secondary" href="#explore">Browse all careers</a>
         </div>
-        <p class="hero-note">19 career paths · real BLS wage data · a roadmap for every grade</p>
+        <p class="hero-note">19 career paths · real BLS wage data · a roadmap for every grade · <a href="#workbook" style="color:var(--accent); font-weight:600;">also available as a print workbook</a></p>
       </div>
       <div class="hero-art" aria-hidden="true">
         <svg viewBox="0 0 420 340" width="100%">
@@ -321,6 +348,31 @@
     </div>
   </section>
 
+  <!-- WORKBOOK CTA -->
+  <section class="workbook-band" id="workbook">
+    <div class="wrap workbook-inner">
+      <div class="workbook-copy">
+        <h2>Take it off the screen.</h2>
+        <p>Everything above, plus a lot more, in a 20-page print-ready workbook — fill it in by hand, keep it in a binder, actually finish it.</p>
+        <ul class="workbook-list">
+          <li>A paper version of the quiz, with a self-scoring grid</li>
+          <li>All 19 career profiles, one page at a time</li>
+          <li>The full 9th–12th grade roadmap as checklists</li>
+          <li>A program &amp; college research worksheet</li>
+          <li>A shadowing request email template</li>
+        </ul>
+      </div>
+      <div class="workbook-cta">
+        <div class="workbook-card">
+          <div class="label">Vital Path</div>
+          <h3>The Companion Workbook</h3>
+          <a class="btn btn-primary" href="https://payhip.com/b/eTdi3" target="_blank" rel="noopener">Get the workbook</a>
+          <div class="fine">Instant PDF download · Checkout via Payhip</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- RESOURCES -->
   <section class="page" id="resources">
     <div class="wrap">
@@ -367,7 +419,7 @@
   <div class="wrap">
     <div class="footer-top">
       <div class="footer-brand">Vital Path</div>
-      <div style="font-size:0.86rem; color:var(--ink-soft);">Vital Path Enterprises · razeentalha25@gmail.com · [your website]</div>
+      <div style="font-size:0.86rem; color:var(--ink-soft);">razeentalha25@gmail.com</div>
     </div>
     <div class="footer-bottom">
       <span>Salary figures: U.S. Bureau of Labor Statistics, Occupational Employment and Wage Statistics, May 2025.</span>
@@ -694,6 +746,7 @@ function renderResults(box){
       <h3 style="font-size:1.4rem; margin-bottom:6px;">Your top matches</h3>
       <p style="color:var(--ink-soft); margin-bottom:20px; font-size:0.95rem;">Based on your answers — see the full profile for any of these in the career directory below.</p>
       ${cardsHTML}
+      <p style="text-align:center; font-size:0.92rem; color:var(--ink-soft); margin-top:4px;">Want to work through your top match on paper? <a href="#workbook" style="color:var(--accent); font-weight:600;">Get the companion workbook</a>.</p>
       <div class="quiz-restart">
         <button class="btn btn-secondary" onclick="restartQuiz()">Retake the quiz</button>
         <a class="btn btn-primary" href="#explore" style="margin-left:10px;">Browse all careers</a>
